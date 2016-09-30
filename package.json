@@ -1,0 +1,40 @@
+{
+  "name": "eslint-plugin-sql-template",
+  "version": "1.0.0",
+  "description": "ESLint plugin with rules for using the `sql` template tag on raw SQL queries",
+  "keywords": [
+    "plugin",
+    "eslint",
+    "lint",
+    "shared",
+    "tag",
+    "sql",
+    "sql-tag",
+    "string",
+    "template"
+  ],
+  "homepage": "https://github.com/uphold/eslint-plugin-sql-template#readme",
+  "bugs": "https://github.com/uphold/eslint-plugin-sql-template/issues",
+  "license": "MIT",
+  "author": "Uphold",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/uphold/eslint-plugin-sql-template.git"
+  },
+  "dependencies": {
+    "lodash": "^4.16.2",
+    "sql-parse": "^0.1.5"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "changelog": "github_changelog_generator --header-label '# Changelog' --no-issues --no-verbose --future-release=$npm_config_future_release && sed -i '' -e :a -e '$d;N;2,3ba' -e 'P;D' CHANGELOG.md",
+    "test": "mocha ./test/**/*.js",
+    "version": "npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md"
+  },
+  "devDependencies": {
+    "eslint": "^3.6.1",
+    "mocha": "^3.1.0"
+  }
+}
