@@ -30,7 +30,7 @@
   },
   "scripts": {
     "changelog": "github_changelog_generator --header-label '# Changelog' --no-issues --no-verbose --future-release=$npm_config_future_release && sed -i '' -e :a -e '$d;N;2,3ba' -e 'P;D' CHANGELOG.md",
-    "test": "mocha ./test/**/*.js",
+    "test": "mocha --recursive",
     "version": "npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md"
   },
   "devDependencies": {
