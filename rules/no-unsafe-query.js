@@ -4,7 +4,6 @@
  * Module dependencies.
  */
 
-const _ = require('lodash');
 const parser = require('sql-parse');
 
 /**
@@ -39,7 +38,7 @@ function validate(node, context) {
   }
 
   if (node.type === 'TemplateLiteral' && node.expressions.length) {
-    const literal = _.map(node.quasis, 'value.raw').join('x');
+    const literal = node.quasis.map(quasi => quasi.value.raw).join('x');
 
     if (isSqlQuery(literal)) {
       context.report(node, 'Use the `sql` tagged template literal for raw queries');
