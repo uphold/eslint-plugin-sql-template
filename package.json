@@ -22,7 +22,6 @@
     "url": "git+ssh://git@github.com/uphold/eslint-plugin-sql-template.git"
   },
   "dependencies": {
-    "lodash": "^4.16.2",
     "sql-parse": "^0.1.5"
   },
   "engines": {
