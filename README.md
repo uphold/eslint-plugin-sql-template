@@ -1,5 +1,7 @@
 # eslint-plugin-sql-template
 
+[![Build Status](https://travis-ci.org/uphold/eslint-plugin-sql-template.svg?branch=master)](https://travis-ci.org/uphold/eslint-plugin-sql-template)
+
 ESLint plugin with rules for using the `sql` template tag from a library such as [sql-tag](https://github.com/seegno/sql-tag) on raw SQL queries.
 
 That library escapes data provided to an SQL query statement via interpolation. This prevents, for instance, potential SQL injection attacks.
