@@ -33,7 +33,7 @@
     "version": "npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md"
   },
   "devDependencies": {
-    "eslint": "^3.6.1",
+    "eslint": "^6.6.0",
     "mocha": "^3.1.0"
   }
 }
