@@ -101,5 +101,5 @@ The release process is automated via the [release](https://github.com/uphold/esl
 
 [npm-image]: https://img.shields.io/npm/v/eslint-plugin-sql-template.svg
 [npm-url]: https://www.npmjs.com/package/eslint-plugin-sql-template
-[ci-image]: https://github.com/uphold/eslint-plugin-sql-template/actions/workflows/ci.yml/badge.svg?branch=master
-[ci-url]: https://github.com/uphold/eslint-plugin-sql-template/actions/workflows/ci.yml
+[ci-image]: https://github.com/uphold/eslint-plugin-sql-template/actions/workflows/ci.yaml/badge.svg?branch=master
+[ci-url]: https://github.com/uphold/eslint-plugin-sql-template/actions/workflows/ci.yaml
