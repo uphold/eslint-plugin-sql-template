@@ -4,12 +4,12 @@
  * Module dependencies.
  */
 
-const RuleTester = require('eslint').RuleTester;
+const { RuleTester } = require('eslint');
 const rule = require('../../rules/no-unsafe-query');
 
 RuleTester.setDefaultConfig({
-  parserOptions: {
-    ecmaVersion: 6
+  languageOptions: {
+    ecmaVersion: 2022
   }
 });
 
@@ -20,27 +20,44 @@ RuleTester.setDefaultConfig({
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-unsafe-query', rule, {
-  invalid: [{
-    code: 'const column = "*"; foo.query(`SELECT ${column} FROM foobar`);',
-    errors: [{
-      message: 'Use the `sql` tagged template literal for raw queries'
-    }]
-  }, {
-    code: 'const column = "*"; const query = `SELECT ${column} FROM foobar`; foo.query(query);',
-    errors: [{
-      message: 'Use the `sql` tagged template literal for raw queries'
-    }]
-  }, {
-    code: 'const column = "*"; foo.query(foobar`SELECT ${column} FROM foobar`);',
-    errors: [{
-      message: 'Use the `sql` tagged template literal for raw queries'
-    }]
-  }, {
-    code: 'const column = "*"; const query = foobar`SELECT ${column} FROM foobar`; foo.query(query);',
-    errors: [{
-      message: 'Use the `sql` tagged template literal for raw queries'
-    }]
-  }],
+  invalid: [
+    {
+      code: 'const column = "*"; foo.query(`SELECT ${column} FROM foobar`);',
+      errors: [
+        {
+          message: 'Use the `sql` tagged template literal for raw queries',
+          type: 'TemplateLiteral'
+        }
+      ]
+    },
+    {
+      code: 'const column = "*"; const query = `SELECT ${column} FROM foobar`; foo.query(query);',
+      errors: [
+        {
+          message: 'Use the `sql` tagged template literal for raw queries',
+          type: 'TemplateLiteral'
+        }
+      ]
+    },
+    {
+      code: 'const column = "*"; foo.query(foobar`SELECT ${column} FROM foobar`);',
+      errors: [
+        {
+          message: 'Use the `sql` tagged template literal for raw queries',
+          type: 'TemplateLiteral'
+        }
+      ]
+    },
+    {
+      code: 'const column = "*"; const query = foobar`SELECT ${column} FROM foobar`; foo.query(query);',
+      errors: [
+        {
+          message: 'Use the `sql` tagged template literal for raw queries',
+          type: 'TemplateLiteral'
+        }
+      ]
+    }
+  ],
   valid: [
     'const column = "*"; foo.query(sql`SELECT ${column} FROM foobar`);',
     'const column = "*"; const query = sql`SELECT ${column} FROM foobar`; foo.query(query);',
