@@ -25,15 +25,31 @@
     "sql-parse": "^0.1.5"
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=20"
+  },
+  "files": [
+    "index.js",
+    "rules"
+  ],
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
-    "changelog": "github_changelog_generator --header-label '# Changelog' --no-issues --no-verbose --future-release=$npm_config_future_release && sed -i '' -e :a -e '$d;N;2,3ba' -e 'P;D' CHANGELOG.md",
-    "test": "mocha --recursive",
-    "version": "npm run changelog --future-release=$npm_package_version && git add -A CHANGELOG.md"
+    "lint": "eslint .",
+    "release": "release-it",
+    "test": "mocha test --recursive"
   },
   "devDependencies": {
-    "eslint": "^3.6.1",
-    "mocha": "^3.1.0"
+    "@eslint/js": "^9.12.0",
+    "@uphold/github-changelog-generator": "^3.4.0",
+    "eslint": "^9.12.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "mocha": "^10.7.3",
+    "prettier": "^3.3.3",
+    "release-it": "^17.9.0"
+  },
+  "peerDependencies": {
+    "eslint": ">=9"
   }
 }

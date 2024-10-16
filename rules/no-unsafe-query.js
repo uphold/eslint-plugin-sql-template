@@ -17,6 +17,8 @@ function isSqlQuery(literal) {
 
   try {
     parser.parse(literal);
+
+    // eslint-disable-next-line no-unused-vars
   } catch (error) {
     return false;
   }
@@ -41,7 +43,10 @@ function validate(node, context) {
     const literal = node.quasis.map(quasi => quasi.value.raw).join('x');
 
     if (isSqlQuery(literal)) {
-      context.report(node, 'Use the `sql` tagged template literal for raw queries');
+      context.report({
+        node,
+        message: 'Use the `sql` tagged template literal for raw queries'
+      });
     }
   }
 }
@@ -50,11 +55,24 @@ function validate(node, context) {
  * Export `no-unsafe-query`.
  */
 
-module.exports = context => ({
-  CallExpression(node) {
-    node.arguments.forEach(argument => validate(argument, context));
+module.exports = {
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'disallow unsafe SQL queries',
+      recommended: false,
+      url: 'https://github.com/uphold/eslint-plugin-sql-template#rules'
+    },
+    schema: [] // no options
   },
-  VariableDeclaration(node) {
-    node.declarations.forEach(declaration => validate(declaration.init, context));
+  create(context) {
+    return {
+      CallExpression(node) {
+        node.arguments.forEach(argument => validate(argument, context));
+      },
+      VariableDeclaration(node) {
+        node.declarations.forEach(declaration => validate(declaration.init, context));
+      }
+    };
   }
-});
+};

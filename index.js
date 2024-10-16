@@ -4,6 +4,11 @@
  * Export rules.
  */
 
-module.exports.rules = {
-  'no-unsafe-query': require('./rules/no-unsafe-query')
+module.exports = {
+  meta: {},
+  configs: {},
+  rules: {
+    'no-unsafe-query': require('./rules/no-unsafe-query')
+  },
+  processors: {}
 };
