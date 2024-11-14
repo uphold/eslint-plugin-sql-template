@@ -178,6 +178,7 @@ ruleTester.run('no-unsafe-query', rule, {
     { code: 'db.query(`SELECT foo FROM bar`);' }, // Raw SQL without interpolation is valid
     { code: 'const query = `SELECT * FROM users WHERE active = true`;' }, // Also valid
     { code: 'foo.query(`SELECT * FROM table WHERE id = 1`);' }, // Also valid
+    { code: 'db.query(`SELECT foo FROM bar WHERE biz = ${"foo"}`);' }, // Raw SQL with interpolation of a literal is valid
     { code: 'log.info(`This will update ${total} records`)' },
     { code: 'const token = crypto.generateToken(32); redis.set(sha1`password-reset:token:${token}`);' }
   ]
