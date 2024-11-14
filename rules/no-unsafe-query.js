@@ -1,77 +1,108 @@
 'use strict';
 
 /**
- * Module dependencies.
+ * Helper function to check if an expression contains a variable.
  */
 
-const parser = require('sql-parse');
+function containsVariableExpression(expression) {
+  if (!expression) return false;
 
-/**
- * Check if `literal` is an SQL query.
- */
-
-function isSqlQuery(literal) {
-  if (!literal) {
-    return false;
+  if (['Identifier', 'CallExpression', 'MemberExpression'].includes(expression.type)) {
+    return true;
   }
 
-  try {
-    parser.parse(literal);
-
-    // eslint-disable-next-line no-unused-vars
-  } catch (error) {
-    return false;
+  if (expression.type === 'ConditionalExpression') {
+    return containsVariableExpression(expression.consequent) || containsVariableExpression(expression.alternate);
   }
 
-  return true;
+  if (expression.type === 'TemplateLiteral') {
+    return expression.expressions.some(containsVariableExpression);
+  }
+
+  return false;
 }
 
 /**
- * Validate node.
+ * Helper function to check if a node has a parent that is a template literal.
  */
 
-function validate(node, context) {
-  if (!node) {
-    return;
+function hasParentTemplateLiteral(node) {
+  if (!node?.parent) return false;
+
+  if (node.parent.type === 'TemplateLiteral') {
+    return true;
   }
 
-  if (node.type === 'TaggedTemplateExpression' && node.tag.name !== 'sql') {
-    node = node.quasi;
-  }
-
-  if (node.type === 'TemplateLiteral' && node.expressions.length) {
-    const literal = node.quasis.map(quasi => quasi.value.raw).join('x');
-
-    if (isSqlQuery(literal)) {
-      context.report({
-        node,
-        message: 'Use the `sql` tagged template literal for raw queries'
-      });
-    }
-  }
+  return hasParentTemplateLiteral(node.parent);
 }
 
 /**
- * Export `no-unsafe-query`.
+ * SQL starting keywords to detect inside the template literal.
+ */
+
+const sqlKeywords = /^`\s*(SELECT|INSERT\s+INTO|UPDATE|DELETE\s+FROM|WITH|GRANT|BEGIN|DROP)\b/i;
+
+/**
+ * Rule definition.
  */
 
 module.exports = {
   meta: {
     type: 'suggestion',
+    hasSuggestions: true,
+    fixable: 'code',
     docs: {
-      description: 'disallow unsafe SQL queries',
+      description: 'Enforce safe SQL query handling using tagged templates',
       recommended: false,
       url: 'https://github.com/uphold/eslint-plugin-sql-template#rules'
     },
-    schema: [] // no options
+    messages: {
+      missingSqlTag: 'Use the `sql` tagged template literal for raw queries'
+    },
+    schema: []
   },
   create(context) {
     return {
-      CallExpression(node) {
-        node.arguments.forEach(argument => validate(argument, context));
-      },
-      VariableDeclaration(node) {
-        node.declarations.forEach(declaration => validate(declaration.init, context));
+      TemplateLiteral(node) {
+        // Only check interpolated template literals.
+        if (node?.type !== 'TemplateLiteral' || node.expressions.length === 0) {
+          return;
+        }
+
+        // Skip if the template literal has in it's chain a parent that is a TemplateLiteral.
+        if (hasParentTemplateLiteral(node)) {
+          return;
+        }
+
+        // Skip if the template literal is already tagged with `sql`.
+        if (node.parent.type === 'TaggedTemplateExpression' && node.parent.tag.name === 'sql') {
+          return;
+        }
+
+        // Check if the template literal has SQL.
+        const hasSQL = sqlKeywords.test(context.sourceCode.getText(node));
+
+        // Recursively check if any expression is a variable (Identifier, MemberExpression, or nested TemplateLiteral)
+        const hasVariableExpression = node.expressions.some(containsVariableExpression);
+
+        if (hasSQL && hasVariableExpression) {
+          context.report({
+            node,
+            messageId: 'missingSqlTag',
+            suggest: [
+              {
+                desc: 'Wrap with sql tag',
+                fix(fixer) {
+                  if (node.parent?.type === 'TaggedTemplateExpression') {
+                    return fixer.replaceText(node.parent.tag, 'sql');
+                  }
+
+                  return fixer.insertTextBefore(node, 'sql');
+                }
+              }
+            ]
+          });
+        }
       }
     };
   }
