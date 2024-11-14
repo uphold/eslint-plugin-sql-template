@@ -21,9 +21,6 @@
     "type": "git",
     "url": "git+ssh://git@github.com/uphold/eslint-plugin-sql-template.git"
   },
-  "dependencies": {
-    "sql-parse": "^0.1.5"
-  },
   "engines": {
     "node": ">=20"
   },
