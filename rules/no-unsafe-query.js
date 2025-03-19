@@ -7,7 +7,7 @@
  * @typedef {import('eslint').Rule.RuleContext} RuleContext
  */
 
-const parser = require('sql-parse');
+const parser = require('sql-parser-mistic');
 
 /**
  * Constants.
@@ -15,8 +15,8 @@ const parser = require('sql-parse');
 
 // Common SQL keywords used for pattern detection.
 const SQL_KEYWORDS = {
-  commands: /\b(SELECT|INSERT|UPDATE|DELETE|WITH)\b/i,
-  clauses: /\b(FROM|WHERE|SET|JOIN|GROUP|HAVING|ORDER)\b/i,
+  commands: /^\s*(SELECT|INSERT\s+INTO|UPDATE|DELETE\s+FROM|WITH)\b/i,
+  clauses: /\b(FROM|WHERE|SET|JOIN|GROUP\s+BY|HAVING|ORDER\s+BY)\b/i,
   operators: /\b(AND|OR|IN|BETWEEN|LIKE|IS|NOT)\b/i
 };
 
@@ -28,18 +28,19 @@ const SQL_KEYWORDS = {
 function isSqlQuery(query) {
   if (!query) return false;
 
-  // Quick pattern check before expensive parsing
-  const hasCommonSqlPatterns = Object.values(SQL_KEYWORDS).some(pattern => pattern.test(query));
+  // Must start with a SQL command
+  if (!SQL_KEYWORDS.commands.test(query)) return false;
 
-  if (!hasCommonSqlPatterns) return false;
+  // Must have at least one clause or operator
+  const hasStructure = SQL_KEYWORDS.clauses.test(query) || SQL_KEYWORDS.operators.test(query);
+  if (!hasStructure) return false;
 
   try {
     const result = parser.parse(query.trim());
     return !!result.type;
-    // eslint-disable-next-line no-unused-vars
   } catch (error) {
-    // If parsing fails but it matches SQL patterns, consider it SQL.
-    return true;
+    // Only consider it SQL if it matches multiple patterns
+    return Object.values(SQL_KEYWORDS).filter(pattern => pattern.test(query)).length >= 2;
   }
 }
 
@@ -161,12 +162,12 @@ function validateNode(node, context) {
   // Skip nested templates to avoid double reporting
   if (isNestedTemplate(node) && node.parent?.type !== 'TaggedTemplateExpression') return;
 
-  // Check for SQL usage
+  // Check for SQL usage - require both content and context
   const queryString = node.quasis.map(quasi => quasi.value.raw).join('?');
   const hasSqlContent = isSqlQuery(queryString);
   const isInSqlContext = isSqlContext(node);
 
-  if (hasSqlContent || isInSqlContext) {
+  if (hasSqlContent && isInSqlContext) {
     context.report({
       node,
       message: 'Use the `sql` tagged template literal for raw queries',

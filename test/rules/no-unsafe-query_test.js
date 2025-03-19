@@ -179,6 +179,7 @@ ruleTester.run('no-unsafe-query', rule, {
     { code: 'const query = `SELECT * FROM users WHERE active = true`;' }, // Also valid
     { code: 'foo.query(`SELECT * FROM table WHERE id = 1`);' }, // Also valid
     { code: 'log.info(`This will update ${total} records`)' },
-    { code: 'const token = crypto.generateToken(32); redis.set(sha1`password-reset:token:${token}`);' }
+    { code: 'const token = crypto.generateToken(32); redis.set(sha1`password-reset:token:${token}`);' },
+    { code: 'it(`should do ${foo} with ${bar}`, async () => {});' }
   ]
 });
