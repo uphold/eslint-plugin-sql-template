@@ -44,7 +44,7 @@
     "eslint-plugin-prettier": "^5.2.1",
     "mocha": "^10.7.3",
     "prettier": "^3.3.3",
-    "release-it": "^17.9.0"
+    "release-it": "^19.2.4"
   },
   "peerDependencies": {
     "eslint": ">=9"
