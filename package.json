@@ -34,17 +34,16 @@
   "scripts": {
     "lint": "eslint .",
     "release": "release-it",
-    "test": "mocha test --recursive"
+    "test": "node --test test/rules/no-unsafe-query_test.js"
   },
   "devDependencies": {
-    "@eslint/js": "^9.12.0",
-    "@uphold/github-changelog-generator": "^3.4.0",
-    "eslint": "^9.12.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "mocha": "^10.7.3",
-    "prettier": "^3.3.3",
-    "release-it": "^17.9.0"
+    "@eslint/js": "^10.0.1",
+    "@uphold/github-changelog-generator": "^4.0.2",
+    "eslint": "^10.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "prettier": "^3.8.1",
+    "release-it": "^19.2.4"
   },
   "peerDependencies": {
     "eslint": ">=9"
