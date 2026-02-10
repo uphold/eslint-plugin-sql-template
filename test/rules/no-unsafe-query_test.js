@@ -31,7 +31,6 @@ ruleTester.run('no-unsafe-query', rule, {
       errors: [
         {
           message: 'Use the `sql` tagged template literal for raw queries',
-          type: 'TemplateLiteral',
           suggestions: [
             {
               desc: 'Wrap with sql tag',
@@ -46,7 +45,6 @@ ruleTester.run('no-unsafe-query', rule, {
       errors: [
         {
           message: 'Use the `sql` tagged template literal for raw queries',
-          type: 'TemplateLiteral',
           suggestions: [
             {
               desc: 'Wrap with sql tag',
@@ -61,7 +59,6 @@ ruleTester.run('no-unsafe-query', rule, {
       errors: [
         {
           message: 'Use the `sql` tagged template literal for raw queries',
-          type: 'TemplateLiteral',
           suggestions: [
             {
               desc: 'Wrap with sql tag',
@@ -76,7 +73,6 @@ ruleTester.run('no-unsafe-query', rule, {
       errors: [
         {
           message: 'Use the `sql` tagged template literal for raw queries',
-          type: 'TemplateLiteral',
           suggestions: [
             {
               desc: 'Wrap with sql tag',
@@ -91,7 +87,6 @@ ruleTester.run('no-unsafe-query', rule, {
       errors: [
         {
           message: 'Use the `sql` tagged template literal for raw queries',
-          type: 'TemplateLiteral',
           suggestions: [
             {
               desc: 'Wrap with sql tag',
@@ -107,7 +102,6 @@ ruleTester.run('no-unsafe-query', rule, {
       errors: [
         {
           message: 'Use the `sql` tagged template literal for raw queries',
-          type: 'TemplateLiteral',
           suggestions: [
             {
               desc: 'Wrap with sql tag',
@@ -123,7 +117,6 @@ ruleTester.run('no-unsafe-query', rule, {
       errors: [
         {
           message: 'Use the `sql` tagged template literal for raw queries',
-          type: 'TemplateLiteral',
           suggestions: [
             {
               desc: 'Wrap with sql tag',
@@ -138,7 +131,6 @@ ruleTester.run('no-unsafe-query', rule, {
       errors: [
         {
           message: 'Use the `sql` tagged template literal for raw queries',
-          type: 'TemplateLiteral',
           suggestions: [
             {
               desc: 'Wrap with sql tag',
@@ -153,7 +145,6 @@ ruleTester.run('no-unsafe-query', rule, {
       errors: [
         {
           message: 'Use the `sql` tagged template literal for raw queries',
-          type: 'TemplateLiteral',
           suggestions: [
             {
               desc: 'Wrap with sql tag',
