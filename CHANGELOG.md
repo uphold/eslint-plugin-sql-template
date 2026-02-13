@@ -1,5 +1,9 @@
 # Changelog
 
+## [v3.2.0](https://github.com/uphold/eslint-plugin-sql-template/releases/tag/v3.2.0) (2026-02-13)
+
+- Upgrade to ESLint v10 and enhance CI workflows [\#14](https://github.com/uphold/eslint-plugin-sql-template/pull/14) ([risantos](https://github.com/risantos))
+
 ## [3.1.0](https://github.com/uphold/eslint-plugin-sql-template/releases/tag/3.1.0) (2025-03-20)
 
 - Improve unsafe query detection [\#11](https://github.com/uphold/eslint-plugin-sql-template/pull/11) ([Americas](https://github.com/Americas))

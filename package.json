@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-sql-template",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "ESLint plugin with rules for using the `sql` template tag on raw SQL queries",
   "keywords": [
     "plugin",
