@@ -19,7 +19,7 @@
   "author": "Uphold",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/uphold/eslint-plugin-sql-template.git"
+    "url": "git+https://github.com/uphold/eslint-plugin-sql-template.git"
   },
   "engines": {
     "node": ">=20"
