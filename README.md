@@ -43,7 +43,15 @@ This plugin includes the following list of rules.
 
 ### `no-unsafe-query`
 
-Disallows the usage of raw SQL templates with interpolation when not protected with the `sql` tag. Use this rule when you want to enforce protection against SQL injection attacks on all queries.
+Disallows the usage of raw SQL templates with interpolation when not protected with the `sql` tag, and disallows raw SQL built by string concatenation. Use this rule when you want to enforce protection against SQL injection attacks on all queries.
+
+A query is recognised as SQL when any of its static string chunks begins with a SQL statement
+keyword (`SELECT`, `INSERT`, `REPLACE`, `UPDATE`, `DELETE`, `MERGE`, `UPSERT`, `WITH`, `GRANT`,
+`REVOKE`, `BEGIN`, `COMMIT`, `ROLLBACK`, `SAVEPOINT`, `DROP`, `TRUNCATE`, `CREATE`, `ALTER`,
+`RENAME`, `SHOW`, `DESC`, `DESCRIBE`, `EXPLAIN`, `PRAGMA`, `VACUUM`, `ANALYZE`, `CALL`, `EXEC`,
+`EXECUTE`, `COPY`), after leading whitespace, `--` line comments, `/* … */` block comments and
+parentheses/semicolons are stripped. Interpolations whose value is provably constant at parse time
+are allowed.
 
 #### Example
 
@@ -58,7 +66,17 @@ db.query(query);
 
 const columns = 'id, name';
 Users.query(`SELECT ${columns} FROM users`);
+
+// String concatenation is reported as well — it is the most common injection shape.
+const injected = 'SELECT * FROM users WHERE id = ' + value;
+
+// A leading interpolation does not hide the SQL keyword.
+const prefixed = `${table} SELECT * FROM users WHERE id = ${value}`;
 ```
+
+The concatenation diagnostic carries no "wrap with `sql`" suggestion, because prefixing a
+`BinaryExpression` with the tag would not compile (`sql'…' + x`); such queries must be rewritten by
+hand into a tagged template.
 
 Examples of **correct** code for this rule:
 
